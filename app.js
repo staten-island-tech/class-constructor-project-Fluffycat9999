@@ -1,12 +1,4 @@
 //one class to create the object person, album, movie ***Model
-const movies = [];
-/* const form = document.querySelector('#movie-form');
-const userTitle = document.querySelector('#title');
-const userYearReleased = document.querySelector('#yearReleased');
-const userDuration = document.querySelector('#duration');
-const userGenre = document.querySelector('#genre');
-const display = document.querySelector('.display'); */
-
 
 //take arguments
 class Movie{
@@ -15,50 +7,64 @@ class Movie{
         this.yearReleased = yearReleased;
         this.duration = duration;
         this.genre = genre;
-    }/* 
-    calcAge(){ 
-        return (new Date().getFullYear() - this.yearReleased);
-    } */
-}
-/* 
-const rushHour = new Movie('Rush Hour', 1998, '1 hour 38 mins', 'Comedy/Thriller/Action');
-console.log(rushHour); */
-/* console.log(rushHour.calcAge()); */
-
-/* function eventListeners(){
-    form.addEventListener('submit', displayMovie);
-    display.addEventListener('click', removeMovie);
-    
-    /* form.addEventListener('submit', function(){
-        console.log('test'); 
-    }); 
-    function displayMovie(e){
-        
-        let html = '<div class="display-movie"> <div class="display-title"> %title%</div> <div class="display-yearReleased">%years% </div> <div class="display-duration">%duration% </div> <div class="display-genre">%genre% </div> <div class="remove-movie"> <p class="remove-movie">Remove Movie &#10006;</p> </div> </div>'
-
-        let newHtml= html.replace('%title%', userTitle.value);
-        newHtml = newHtml.replace('%years%', userYearReleased.value);
-        newHtml = newHtml.replace('%duration%', userDuration.value);
-        newHtml = newHtml.replace('%genre%', userGenre.value);
-        display.insertAdjacentHTML('beforeend', newHtml);
-        e.preventDefault();
     }
-    function removeMovie(e){
-        if(e.target.parentElement.classList.contains('remove-movie')){
-            e.target.parentElement.parentElement.remove();
-            console.log(e.target.parentElement);
+}
+
+class UI{
+    addMovieToList(movie){
+        const display = document.querySelector('.display');
+        let html = '<div class="display-movie"> <div class="display-title"> %title%</div> <div class="display-yearReleased">%years% </div> <div class="display-duration">%duration% </div> <div class="display-genre">%genre% </div> <div class="remove-movie"> <p class="remove-movie">Remove Movie &#10006;</p> </div> </div>'
+        let newHtml= html.replace('%title%', movie.title);
+        newHtml = newHtml.replace('%years%', movie.yearReleased);
+        newHtml = newHtml.replace('%duration%', movie.duration);
+        newHtml = newHtml.replace('%genre%', movie.genre);
+        
+        display.insertAdjacentHTML('beforeend', newHtml);
+    
+    }
+    clearFields(){
+        document.getElementById("title").value = '';
+        document.getElementById("yearReleased").value = '';
+        document.getElementById("duration").value = '';
+        document.getElementById("genre").value = '';
+    }
+    removeMovie(target){
+        if(target.className === 'remove-movie'){
+            target.parentElement.parentElement.remove();
         }
     }
 }
 
-eventListeners();
- */
+document.getElementById('form').addEventListener('submit', function(e){
+    const title = document.getElementById('title').value;
+    const yearReleased = document.getElementById('yearReleased').value;
+    const duration = document.getElementById('duration').value;
+    const genre = document.getElementById('genre').value;
 
+    const movie = new Movie(title, yearReleased, duration, genre);
+    //console.log(movie);
 
-/* console.log('hey please work');
-console.log(userTitle); */
+    const ui = new UI();
+    //console.log(ui);
 
+    if(title == ''||yearReleased == '' ||duration == ''||genre == ''){
+        alert("Error: Missing Info")
+    }else{
+        ui.addMovieToList(movie);
+        ui.clearFields();
+    }
+    e.preventDefault();
+});
 
+document.querySelector('.display').addEventListener('click', function(e){
+    const ui = new UI();
+    
+    ui.removeMovie(e.target);
+
+    ui.clearFields();
+
+    e.preventDefault();
+})
 
 
 
@@ -87,42 +93,3 @@ console.log(userTitle); */
 
 
 //separate event handler for removing/deleting
-
-class UI{
-    addMovieToList(movie){
-        let html = '<div class="display-movie"> <div class="display-title"> %title%</div> <div class="display-yearReleased">%years% </div> <div class="display-duration">%duration% </div> <div class="display-genre">%genre% </div> <div class="remove-movie"> <p class="remove-movie">Remove Movie &#10006;</p> </div> </div>'
-
-        let newHtml= html.replace('%title%', userTitle.value);
-        newHtml = newHtml.replace('%years%', userYearReleased.value);
-        newHtml = newHtml.replace('%duration%', userDuration.value);
-        newHtml = newHtml.replace('%genre%', userGenre.value);
-        display.insertAdjacentHTML('beforeend', newHtml);
-    }
-    clearFields(){
-        document.getElementById("title").value = '';
-        document.getElementById("yearReleased").value = '';
-        document.getElementById("duration").value = '';
-        document.getElementById("genre").value = '';
-    }
-    removeMovie(e){
-        if(e.target.parentElement.classList.contains('remove-movie')){
-            e.target.parentElement.parentElement.remove();
-        }
-    }
-}
-
-document.getElementById('form').addEventListener('submit', function(e){
-    const form = document.querySelector('form').value;
-    const userTitle = document.querySelector('#title');
-    const userYearReleased = document.querySelector('#yearReleased');
-    const userDuration = document.querySelector('#duration');
-    const userGenre = document.querySelector('#genre');
-    const display = document.querySelector('.display');
-
-    const ui = newUI();
-
-    ui.addMovieToList(movie);
-    ui.clearFields();
-    ui.removeMovie(e);
-    e.preventDefault();
-})
